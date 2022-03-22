@@ -1,2 +1,2 @@
-public class Personnage {
+public class Personnage extends Position{
 }

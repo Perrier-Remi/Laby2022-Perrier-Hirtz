@@ -1,2 +1,2 @@
-public class Sortie {
+public class Sortie extends Position{
 }
