@@ -31,4 +31,5 @@ public class Labyrinthe {
     public static int[] getSuivant(int x, int y, String direction){
         
     }
+
 }
