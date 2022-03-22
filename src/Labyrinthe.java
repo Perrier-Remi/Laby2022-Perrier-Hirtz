@@ -3,4 +3,5 @@ public class Labyrinthe {
     private Personnage personnage;
     private Sortie sortie;
 
+    
 }
