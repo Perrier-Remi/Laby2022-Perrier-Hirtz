@@ -3,7 +3,12 @@ public class Labyrinthe {
     private Personnage personnage;
     private Sortie sortie;
 
-
+    /**
+     * methode permettant de recuperer le contenu d'une case
+     * @param x : valeur de la ligne sur laquelle est situee la case
+     * @param y : valeur de la colonne sur laquelle est situee la case
+     * @return retour : character correspondant a l initial du contenu de la case
+     */
     public char getChar(int x, int y){
         char retour = '.';
         if(murs[x][y] == false) {
@@ -14,6 +19,17 @@ public class Labyrinthe {
             retour = 'S';
         }
         return retour;
+    }
+
+    /**
+     * methode de classe permettant de recuperer la case suivante en fonction de la direction 
+     * @param x
+     * @param y
+     * @param direction
+     * @return
+     */
+    public static int[] getSuivant(int x, int y, String direction){
+
     }
 
 }
