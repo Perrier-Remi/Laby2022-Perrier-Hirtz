@@ -3,6 +3,7 @@ public class Labyrinthe {
     private Personnage personnage;
     private Sortie sortie;
 
+
     public char getChar(int x, int y){
         char retour = '.';
         if(murs[x][y] == false) {
@@ -14,4 +15,5 @@ public class Labyrinthe {
         }
         return retour;
     }
+
 }
