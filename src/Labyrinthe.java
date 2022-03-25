@@ -22,14 +22,14 @@ public class Labyrinthe {
     }
 
     /**
-     * methode de classe permettant de recuperer la case suivante en fonction de la direction 
-     * @param x
-     * @param y
-     * @param direction
-     * @return
+     * methode de classe permettant de recuperer la case suivante en fonction de la direction
+     * @param x : numero de la ligne actuelle
+     * @param y : numero de la colonne actuelle
+     * @param direction : direction
+     * @return suiv : case suivante
      */
     public static int[] getSuivant(int x, int y, String direction){
-
+        
     }
 
     public void deplacerPerso(String direction) {
