@@ -123,4 +123,16 @@ public class Labyrinthe {
 
     }
 
+    public String toString(){
+        String returnedString = "";
+
+        for (int i = 0; i < this.murs.length; i++) {
+            for (int j = 0; j < this.murs[0].length; j++){
+
+            }
+        }
+
+        return returnedString;
+    }
+
 }
