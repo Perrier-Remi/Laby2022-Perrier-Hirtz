@@ -13,7 +13,7 @@ public class Labyrinthe {
         this.personnage = null;
         this.sortie = null;
     }
-    
+
     public Labyrinthe(boolean[][] m, Personnage p, Sortie s) {
         this.murs = m;
         this.personnage = p;
@@ -120,7 +120,6 @@ public class Labyrinthe {
 
         // si c'est un mur on s'arrete
         // quand le personnage s arrete on regarde si il est sur la sortie en appellant la methode etre fini
-
     }
 
 }
