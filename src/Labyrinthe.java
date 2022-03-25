@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+
 public class Labyrinthe {
     private boolean[][] murs;
     private Personnage personnage;
@@ -40,28 +41,30 @@ public class Labyrinthe {
      * @param direction : direction
      * @return suiv : case suivante
      */
-//    public static int[] getSuivant(int x, int y, String direction) {
-//        try {
-//            int[] suiv = {x, y};
-//            switch (direction) {
-//                case "HAUT":
-//                    suiv[0] = x - 1;
-//                case "Bas":
-//                    suiv[0] = x + 1;
-//                case "GAUCHE":
-//                    suiv[1] = y - 1;
-//                case "DROITE":
-//                    suiv[1] = y + 1;
-//            }
-//
-//            return suiv;
-//        } catch (ActionInconnueException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    public void deplacerPerso(String direction) {
-//
-//    }
+    public static int[] getSuivant(int x, int y, String direction) {
+        int[] suiv = {x, y};
+        try {
+            switch (direction) {
+                case "HAUT":
+                    suiv[0] = x - 1;
+                case "Bas":
+                    suiv[0] = x + 1;
+                case "GAUCHE":
+                    suiv[1] = y - 1;
+                case "DROITE":
+                    suiv[1] = y + 1;
+                default:
+                    throw new ActionInconnueException(direction);
+            }
+
+
+        } catch (ActionInconnueException e) {
+            System.out.println("Action : "+ direction + " n'est pas valide");
+
+        }
+        return suiv;
+    }
+    
 
     public static Labyrinthe chargerLabyrinthe(String nom) {
         try {
@@ -69,24 +72,24 @@ public class Labyrinthe {
             int x = Integer.parseInt(br.readLine());
             int y = Integer.parseInt(br.readLine());
             boolean[][] murs = new boolean[x][y];
-            Personnage p = new Personnage(0,0);
-            Sortie s = new Sortie(0,0);
+            Personnage p = new Personnage(0, 0);
+            Sortie s = new Sortie(0, 0);
 
-            for(int i = 0; i < x; i++) {
+            for (int i = 0; i < x; i++) {
                 String c = br.readLine();
-                for(int j = 0; j < y; j++) {
-                    switch(c.charAt(j)) {
-                        case 'X' :
+                for (int j = 0; j < y; j++) {
+                    switch (c.charAt(j)) {
+                        case 'X':
                             murs[i][j] = true;
-                        case 'S' :
+                        case 'S':
                             s.setX(i);
                             s.setY(j);
                             murs[i][j] = false;
-                        case 'P' :
+                        case 'P':
                             p.setX(i);
                             p.setY(j);
                             murs[i][j] = false;
-                        case '.' :
+                        case '.':
                             murs[i][j] = false;
                         default:
                             System.out.println("Erreur"); //TODO à completer
@@ -99,6 +102,19 @@ public class Labyrinthe {
             System.out.println("Erreur à l'ouverture du fichier");
         }
         return null;
+    }
+
+
+    /**
+     * methode qui permet de deplacer le personnage en modifiant ses coordonees
+     * @param action : chaine de caracteres
+     */
+    public void deplacerPerso(String action) {
+        //on regarde la case suivante
+
+        // si c'est un mur on s'arrete
+        // quand le personnage s arrete on regarde si il est sur la sortie en appellant la methode etre fini
+
     }
 
 }
