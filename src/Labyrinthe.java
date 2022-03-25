@@ -127,8 +127,9 @@ public class Labyrinthe {
 
         for (int i = 0; i < this.murs.length; i++) {
             for (int j = 0; j < this.murs[0].length; j++){
-
+                returnedString += getChar(i,j); //TODO avec un string builder c'est mieux
             }
+            returnedString += "\n";
         }
 
         return returnedString;

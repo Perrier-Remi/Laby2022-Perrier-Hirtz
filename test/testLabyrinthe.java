@@ -7,6 +7,7 @@ public class testLabyrinthe {
     public void testChargerLabyrinthe() {
         Labyrinthe l = new Labyrinthe();
         l.chargerLabyrinthe("laby/laby0.txt");
+        System.out.println(l);
         assertEquals(true, true,"messqge random pour le moment");
     }
 
