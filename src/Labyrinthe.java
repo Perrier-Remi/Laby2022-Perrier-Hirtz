@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 public class Labyrinthe {
     private boolean[][] murs;
     private Personnage personnage;
@@ -31,8 +33,8 @@ public class Labyrinthe {
      * @return suiv : case suivante
      */
     public static int[] getSuivant(int x, int y, String direction) {
+        int[] suiv = {x, y};
         try {
-            int[] suiv = {x, y};
             switch (direction) {
                 case "HAUT":
                     suiv[0] = x - 1;
@@ -42,14 +44,18 @@ public class Labyrinthe {
                     suiv[1] = y - 1;
                 case "DROITE":
                     suiv[1] = y + 1;
+                default:
+                    throw new ActionInconnueException(direction);
             }
 
-            return suiv;
+
         } catch (ActionInconnueException e) {
             e.printStackTrace();
+
         }
+        return suiv;
     }
-}
+
 
     public void deplacerPerso(String direction) {
 
