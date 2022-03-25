@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.sql.SQLOutput;
 
 public class Labyrinthe {
     private boolean[][] murs;
@@ -50,14 +51,22 @@ public class Labyrinthe {
 
 
         } catch (ActionInconnueException e) {
-            e.printStackTrace();
+            System.out.println("Action : "+ direction + " n'est pas valide");
 
         }
         return suiv;
     }
 
+    /**
+     * methode qui permet de deplacer le personnage en modifiant ses coordonees
+     * @param action : chaine de caracteres
+     */
+    public void deplacerPerso(String action) {
+        //on regarde la case suivante
 
-    public void deplacerPerso(String direction) {
+        // si c'est un mur on s'arrete
+        // quand le personnage s arrete on regarde si il est sur la sortie en appellant la methode etre fini
+
 
     }
 
