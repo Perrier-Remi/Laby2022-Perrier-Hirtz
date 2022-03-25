@@ -122,4 +122,16 @@ public class Labyrinthe {
         // quand le personnage s arrete on regarde si il est sur la sortie en appellant la methode etre fini
     }
 
+    public String toString(){
+        String returnedString = "";
+
+        for (int i = 0; i < this.murs.length; i++) {
+            for (int j = 0; j < this.murs[0].length; j++){
+
+            }
+        }
+
+        return returnedString;
+    }
+
 }
