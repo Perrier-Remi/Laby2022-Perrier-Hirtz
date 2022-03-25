@@ -8,6 +8,12 @@ public class Labyrinthe {
     private Personnage personnage;
     private Sortie sortie;
 
+    public Labyrinthe() {
+        this.murs = new boolean[0][0];
+        this.personnage = null;
+        this.sortie = null;
+    }
+    
     public Labyrinthe(boolean[][] m, Personnage p, Sortie s) {
         this.murs = m;
         this.personnage = p;
@@ -64,7 +70,7 @@ public class Labyrinthe {
         }
         return suiv;
     }
-    
+
 
     public static Labyrinthe chargerLabyrinthe(String nom) {
         try {
