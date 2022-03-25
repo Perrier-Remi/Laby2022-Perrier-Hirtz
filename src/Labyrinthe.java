@@ -1,7 +1,17 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class Labyrinthe {
     private boolean[][] murs;
     private Personnage personnage;
     private Sortie sortie;
+
+    public Labyrinthe(boolean[][] m, Personnage p, Sortie s) {
+        this.murs = m;
+        this.personnage = p;
+        this.sortie = s;
+    }
 
     /**
      * methode permettant de recuperer le contenu d'une case
@@ -30,29 +40,65 @@ public class Labyrinthe {
      * @param direction : direction
      * @return suiv : case suivante
      */
-    public static int[] getSuivant(int x, int y, String direction) {
+//    public static int[] getSuivant(int x, int y, String direction) {
+//        try {
+//            int[] suiv = {x, y};
+//            switch (direction) {
+//                case "HAUT":
+//                    suiv[0] = x - 1;
+//                case "Bas":
+//                    suiv[0] = x + 1;
+//                case "GAUCHE":
+//                    suiv[1] = y - 1;
+//                case "DROITE":
+//                    suiv[1] = y + 1;
+//            }
+//
+//            return suiv;
+//        } catch (ActionInconnueException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//    public void deplacerPerso(String direction) {
+//
+//    }
+
+    public static Labyrinthe chargerLabyrinthe(String nom) {
         try {
-            int[] suiv = {x, y};
-            switch (direction) {
-                case "HAUT":
-                    suiv[0] = x - 1;
-                case "Bas":
-                    suiv[0] = x + 1;
-                case "GAUCHE":
-                    suiv[1] = y - 1;
-                case "DROITE":
-                    suiv[1] = y + 1;
+            BufferedReader br = new BufferedReader(new FileReader(nom));
+            int x = Integer.parseInt(br.readLine());
+            int y = Integer.parseInt(br.readLine());
+            boolean[][] murs = new boolean[x][y];
+            Personnage p = new Personnage(0,0);
+            Sortie s = new Sortie(0,0);
+
+            for(int i = 0; i < x; i++) {
+                String c = br.readLine();
+                for(int j = 0; j < y; j++) {
+                    switch(c.charAt(j)) {
+                        case 'X' :
+                            murs[i][j] = true;
+                        case 'S' :
+                            s.setX(i);
+                            s.setY(j);
+                            murs[i][j] = false;
+                        case 'P' :
+                            p.setX(i);
+                            p.setY(j);
+                            murs[i][j] = false;
+                        case '.' :
+                            murs[i][j] = false;
+                        default:
+                            System.out.println("Erreur"); //TODO à completer
+                    }
+                }
             }
-
-            return suiv;
-        } catch (ActionInconnueException e) {
-            e.printStackTrace();
+            br.close();
+            return new Labyrinthe(murs, p, s);
+        } catch (IOException e) {
+            System.out.println("Erreur à l'ouverture du fichier");
         }
-    }
-}
-
-    public void deplacerPerso(String direction) {
-
+        return null;
     }
 
 }
