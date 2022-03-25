@@ -51,4 +51,8 @@ public class Labyrinthe {
     }
 }
 
+    public void deplacerPerso(String direction) {
+
+    }
+
 }
