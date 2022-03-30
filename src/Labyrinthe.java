@@ -28,10 +28,8 @@ public class Labyrinthe {
      * @return retour : character correspondant a l initial du contenu de la case
      */
     public char getChar(int x, int y) {
-        char retour = '.';
-        if (!murs[x][y]) {
-            retour = 'X';
-        } else if (personnage.getX() == x && personnage.getY() == y) {
+        char retour = murs[x][y] ? 'X' : '.';
+        if (personnage.getX() == x && personnage.getY() == y) {
             retour = 'P';
         } else if (sortie.getX() == x && sortie.getY() == y) {
             retour = 'S';
@@ -74,29 +72,35 @@ public class Labyrinthe {
 
     public static Labyrinthe chargerLabyrinthe(String nom) {
         try {
+            //ouverture des flux de lecture du fichier contenant le labyrinthe
             BufferedReader br = new BufferedReader(new FileReader(nom));
-            int x = Integer.parseInt(br.readLine());
-            int y = Integer.parseInt(br.readLine());
+            int x = Integer.parseInt(br.readLine()); //nombre de colonnes
+            int y = Integer.parseInt(br.readLine()); //nombre de lignes
+            //initialisation des variables du labyrinthe rendu
             boolean[][] murs = new boolean[x][y];
             Personnage p = new Personnage(0, 0);
             Sortie s = new Sortie(0, 0);
 
             for (int i = 0; i < x; i++) {
-                String c = br.readLine();
+                String ligne = br.readLine();
                 for (int j = 0; j < y; j++) {
-                    switch (c.charAt(j)) {
+                    switch (ligne.charAt(j)) {
                         case 'X':
                             murs[i][j] = true;
+                            break;
                         case 'S':
                             s.setX(i);
                             s.setY(j);
                             murs[i][j] = false;
+                            break;
                         case 'P':
                             p.setX(i);
                             p.setY(j);
                             murs[i][j] = false;
+                            break;
                         case '.':
                             murs[i][j] = false;
+                            break;
                         default:
                             System.out.println("Erreur"); //TODO à completer
                     }
@@ -119,20 +123,20 @@ public class Labyrinthe {
         //on regarde la case suivante
 
         // si c'est un mur on s'arrete
-        // quand le personnage s arrete on regarde si il est sur la sortie en appellant la methode etre fini
+        // quand le personnage s'arrete on regarde si il est sur la sortie en appellant la methode etre fini
     }
 
     public String toString(){
-        String returnedString = "";
+        StringBuilder returnedString = new StringBuilder();
 
         for (int i = 0; i < this.murs.length; i++) {
             for (int j = 0; j < this.murs[0].length; j++){
-                returnedString += getChar(i,j); //TODO avec un string builder c'est mieux
+                returnedString.append(getChar(i,j));
             }
-            returnedString += "\n";
+            returnedString.append("\n");
         }
 
-        return returnedString;
+        return returnedString.toString();
     }
 
 }
