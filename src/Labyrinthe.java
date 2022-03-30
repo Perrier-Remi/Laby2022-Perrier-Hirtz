@@ -8,11 +8,17 @@ public class Labyrinthe {
     private Personnage personnage;
     private Sortie sortie;
 
-    public Labyrinthe() {
-        this.murs = new boolean[0][0];
-        this.personnage = null;
-        this.sortie = null;
-    }
+    //constantes labyrinthe
+    static char MUR = 'X';
+    static char PJ = 'P';
+    static char SORTIE = 'S';
+    static char VIDE = '.';
+    //constantes deplacements
+    static String HAUT = "haut";
+    static String BAS = "bas";
+    static String GAUCHE = "gauche";
+    static String DROITE = "droite";
+
 
     public Labyrinthe(boolean[][] m, Personnage p, Sortie s) {
         this.murs = m;
@@ -28,11 +34,11 @@ public class Labyrinthe {
      * @return retour : character correspondant a l initial du contenu de la case
      */
     public char getChar(int x, int y) {
-        char retour = murs[x][y] ? 'X' : '.';
+        char retour = murs[x][y] ? MUR : VIDE;
         if (personnage.getX() == x && personnage.getY() == y) {
-            retour = 'P';
+            retour = PJ;
         } else if (sortie.getX() == x && sortie.getY() == y) {
-            retour = 'S';
+            retour = SORTIE;
         }
         return retour;
     }
@@ -124,6 +130,11 @@ public class Labyrinthe {
 
         // si c'est un mur on s'arrete
         // quand le personnage s'arrete on regarde si il est sur la sortie en appellant la methode etre fini
+    }
+
+    public boolean etreFini() {
+        return  this.personnage.getX() == this.sortie.getX() &&
+                this.personnage.getY() == this.sortie.getY();
     }
 
     public String toString(){
