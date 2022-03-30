@@ -55,13 +55,13 @@ public class Labyrinthe {
         int[] suiv = {x, y};
         try {
             switch (direction) {
-                case "HAUT":
+                case "haut":
                     suiv[0] = x - 1;
-                case "Bas":
+                case "bas":
                     suiv[0] = x + 1;
-                case "GAUCHE":
+                case "gauche":
                     suiv[1] = y - 1;
-                case "DROITE":
+                case "droite":
                     suiv[1] = y + 1;
                 default:
                     throw new ActionInconnueException(direction);

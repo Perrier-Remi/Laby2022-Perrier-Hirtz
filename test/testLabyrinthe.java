@@ -17,4 +17,9 @@ public class testLabyrinthe {
         assertEquals("XXXXXXX\nXS....X\nX..P..X\nX.....X\nXXXXXXX\n", laby.toString(),"methode toString ou chargerLabyrinthe fausse");
     }
 
+    @Test
+    public void testGetSuivant() {
+        assertEquals(laby.getSuivant(1,1,"haut"),new int[] {0,1}, "la case en haut est en 0,1");
+    }
+
 }
