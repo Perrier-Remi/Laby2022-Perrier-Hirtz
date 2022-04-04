@@ -67,7 +67,7 @@ public class Labyrinthe {
                 suiv[1] = y + 1;
                 break;
             default:
-                throw new ActionInconnueException(direction);
+                throw new ActionInconnueException("direction : "+direction+" inconnu");
         }
         return suiv;
     }
@@ -127,7 +127,7 @@ public class Labyrinthe {
     public void deplacerPerso(String action) {
         boolean murRencontre = false;
         //tant que etreFini() est faux ou qu'on ne rencontre pas de mur, on continue
-        while (!etreFini() || !murRencontre) {
+        while (!murRencontre) {
             int[] coorSuivantes = new int[2];
             char caseSuivante;
             try {
@@ -144,7 +144,7 @@ public class Labyrinthe {
                 }
 
             } catch (ActionInconnueException e) {
-                System.out.println("déplacement inconnu");
+                System.out.println(e);
             }
 
         }
