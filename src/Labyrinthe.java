@@ -51,26 +51,23 @@ public class Labyrinthe {
      * @param direction : direction
      * @return suiv : case suivante
      */
-    public static int[] getSuivant(int x, int y, String direction) {
+    public static int[] getSuivant(int x, int y, String direction) throws ActionInconnueException{
         int[] suiv = {x, y};
-        try {
-            switch (direction) {
-                case "haut":
-                    suiv[0] = x - 1;
-                case "bas":
-                    suiv[0] = x + 1;
-                case "gauche":
-                    suiv[1] = y - 1;
-                case "droite":
-                    suiv[1] = y + 1;
-                default:
-                    throw new ActionInconnueException(direction);
-            }
-
-
-        } catch (ActionInconnueException e) {
-            System.out.println("Action : "+ direction + " n'est pas valide");
-
+        switch (direction) {
+            case "haut":
+                suiv[0] = x - 1;
+                break;
+            case "bas":
+                suiv[0] = x + 1;
+                break;
+            case "gauche":
+                suiv[1] = y - 1;
+                break;
+            case "droite":
+                suiv[1] = y + 1;
+                break;
+            default:
+                throw new ActionInconnueException(direction);
         }
         return suiv;
     }
@@ -112,11 +109,13 @@ public class Labyrinthe {
                     }
                 }
             }
+            //fermeture des flux
             br.close();
             return new Labyrinthe(murs, p, s);
         } catch (IOException e) {
             System.out.println("Erreur à l'ouverture du fichier");
         }
+        //retourne null si il y a eu une erreur ou une exception lors de la génération du labyrinthe
         return null;
     }
 
@@ -126,10 +125,29 @@ public class Labyrinthe {
      * @param action : chaine de caracteres
      */
     public void deplacerPerso(String action) {
-        //on regarde la case suivante
+        boolean murRencontre = false;
+        //tant que etreFini() est faux ou qu'on ne rencontre pas de mur, on continue
+        while (!etreFini() || !murRencontre) {
+            int[] coorSuivantes = new int[2];
+            char caseSuivante;
+            try {
+                // on regarde la case suivante
+                coorSuivantes = getSuivant(this.personnage.getX(), this.personnage.getY(), action);
+                caseSuivante = getChar(coorSuivantes[0],coorSuivantes[1]);
+                if (caseSuivante == MUR) {
+                    // si c'est un mur on s'arrete et on arrête la boucle
+                    murRencontre = true;
+                } else if (caseSuivante == VIDE) {
+                    // si c'est une case vide alors on peut continuer
+                    this.personnage.setX(coorSuivantes[0]);
+                    this.personnage.setY(coorSuivantes[1]);
+                }
 
-        // si c'est un mur on s'arrete
-        // quand le personnage s'arrete on regarde si il est sur la sortie en appellant la methode etre fini
+            } catch (ActionInconnueException e) {
+                System.out.println("déplacement inconnu");
+            }
+
+        }
     }
 
     public boolean etreFini() {
