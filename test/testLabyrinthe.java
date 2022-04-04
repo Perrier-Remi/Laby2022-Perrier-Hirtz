@@ -44,4 +44,23 @@ public class testLabyrinthe {
         );
     }
 
+    @Test
+    public void testMethodeDeplacerPerso() {
+        //deplacement vers le haut
+        laby.deplacerPerso("haut");
+        assertEquals(laby.getChar(1,3), 'P', "le personnage doit etre en x 1 et y 3");
+
+        //deplacement vers le bas
+        laby.deplacerPerso("bas");
+        assertEquals(laby.getChar(3,3), 'P', "le personnage doit etre en x 3 et y 3");
+
+        //deplacement vers la gauche
+        laby.deplacerPerso("gauche");
+        assertEquals(laby.getChar(3,1), 'P', "le personnage doit etre en x 3 et y 1");
+
+        //deplacement vers la droite
+        laby.deplacerPerso("droite");
+        assertEquals(laby.getChar(3,5), 'P', "le personnage doit etre en x 3 et y 1");
+    }
+
 }
