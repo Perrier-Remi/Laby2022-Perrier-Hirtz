@@ -125,6 +125,7 @@ public class Labyrinthe {
      * @param action : chaine de caracteres
      */
     public void deplacerPerso(String action) {
+        //TODO à modifier lorque l'on rencontre la sortie
         boolean murRencontre = false;
         //tant que etreFini() est faux ou qu'on ne rencontre pas de mur, on continue
         while (!murRencontre) {
