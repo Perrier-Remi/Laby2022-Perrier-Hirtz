@@ -63,4 +63,11 @@ public class testLabyrinthe {
         assertEquals(laby.getChar(3,5), 'P', "le personnage doit etre en x 3 et y 1");
     }
 
+    @Test
+    public void testMethodeEtreFini() {
+        assertEquals(laby.etreFini(), false, "la partie n'est pas encore finie");
+        laby.deplacerPerso("haut");
+        laby.deplacerPerso("gauche");
+        assertEquals(laby.etreFini(), true, "le personnage et la sortie sont sur la même case donc etreFini() doit renvoyer vrai");
+    }
 }
