@@ -109,4 +109,20 @@ public class testLabyrinthe {
                 () -> {laby.chargerLabyrinthe("laby/laby_pasPersonnages.txt");}
         );
     }
+
+    @Test
+    public void testExceptionChargerLabyrintheNombreDeColonnesFaux() {
+        FichierIncorrectException exception = assertThrows(
+                FichierIncorrectException.class,
+                () -> {laby.chargerLabyrinthe("laby/laby_mauvaisNombreColonnes.txt");}
+        );
+    }
+
+    @Test
+    public void testExceptionChargerLabyrintheNombreDeLignesFaux() {
+        FichierIncorrectException exception = assertThrows(
+                FichierIncorrectException.class,
+                () -> {laby.chargerLabyrinthe("laby/laby_mauvaisNombreLignes.txt");}
+        );
+    }
 }
