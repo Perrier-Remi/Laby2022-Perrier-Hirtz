@@ -90,4 +90,20 @@ public class testLabyrinthe {
                 () -> {laby.chargerLabyrinthe("laby/laby_pasSortie.txt");}
         );
     }
+
+    @Test
+    public void testExceptionChargerLabyrintheDeuxPersonnages() {
+        FichierIncorrectException exception = assertThrows(
+                FichierIncorrectException.class,
+                () -> {laby.chargerLabyrinthe("laby/laby_deuxPersonnages.txt");}
+        );
+    }
+
+    @Test
+    public void testExceptionChargerLabyrinthePasPersonnages() {
+        FichierIncorrectException exception = assertThrows(
+                FichierIncorrectException.class,
+                () -> {laby.chargerLabyrinthe("laby/laby_pasPersonnages.txt");}
+        );
+    }
 }
