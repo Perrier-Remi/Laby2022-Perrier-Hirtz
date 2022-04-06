@@ -8,12 +8,12 @@ public class Labyrinthe {
     private Personnage personnage;
     private Sortie sortie;
 
-    //constantes labyrinthe
+    //constantes du labyrinthe
     static char MUR = 'X';
     static char PJ = 'P';
     static char SORTIE = 'S';
     static char VIDE = '.';
-    //constantes deplacements
+    //constantes de deplacements
     static String HAUT = "haut";
     static String BAS = "bas";
     static String GAUCHE = "gauche";
@@ -34,12 +34,12 @@ public class Labyrinthe {
      * @return retour : character correspondant a l initial du contenu de la case
      */
     public char getChar(int x, int y) {
-        //si il y a un mur en x, y alors retour vaut MUR sinon il vaut VIDE
+        //s'il y a un mur en x, y alors retour vaut MUR sinon il vaut VIDE
         char retour = murs[x][y] ? MUR : VIDE;
-        //si il y a un personnage en x,y alors retour est changé et vaut PJ
+        //s'il y a un personnage en x,y alors retour est changé et vaut PJ
         if (personnage.getX() == x && personnage.getY() == y) {
             retour = PJ;
-            //si il y une sortie en x,y alors retour est changé et vaut SORTIE
+            //s'il y une sortie en x,y alors retour est changé et vaut SORTIE
         } else if (sortie.getX() == x && sortie.getY() == y) {
             retour = SORTIE;
         }
@@ -48,10 +48,10 @@ public class Labyrinthe {
 
     /**
      * methode de classe permettant de recuperer la case suivante en fonction de la direction
-     *
      * @param x         : numero de la ligne actuelle
      * @param y         : numero de la colonne actuelle
      * @param direction : direction
+     * @throws ActionInconnueException
      * @return case suivante
      */
     public static int[] getSuivant(int x, int y, String direction) throws ActionInconnueException{
@@ -76,20 +76,29 @@ public class Labyrinthe {
 
     //todo gérer l'exception avec le nombre de murs incorrect
     public static Labyrinthe chargerLabyrinthe(String nom) throws FichierIncorrectException, IOException {
+
         //ouverture des flux de lecture du fichier contenant le labyrinthe
         BufferedReader br = new BufferedReader(new FileReader(nom));
         int x = Integer.parseInt(br.readLine()); //nombre de colonnes
         int y = Integer.parseInt(br.readLine()); //nombre de lignes
+
         //initialisation des variables du labyrinthe rendu
         boolean[][] murs = new boolean[x][y];
         Personnage p = new Personnage(0, 0);
         Sortie s = new Sortie(0, 0);
+
         //deux variables booléennes vérifient qu'il n'y ait qu'un et un seul personnage et qu'une et une seule sortie
         boolean flagSortie = false;
         boolean flagPersonnage = false;
 
         for (int i = 0; i < x; i++) {
             String ligne = br.readLine();
+
+            //test si le nombre de lignes est bon (si la ligne est vide il y a un problème)
+            if (ligne == null) {throw new FichierIncorrectException("le nombre de ligne n'est pas le même que celui déclaré au début du fichier");}
+            //test si le nombre de caractères de la ligne est bon (si il est différent de x alors il y a un problème)
+            if (ligne.length() != x) {throw new FichierIncorrectException("le nombre de colonnes n'est pas le même que celui déclaré au début du fichier");}
+
             for (int j = 0; j < y; j++) {
                 switch (ligne.charAt(j)) {
                     case 'X':
@@ -98,9 +107,9 @@ public class Labyrinthe {
                     case 'S':
                         s.setX(i);
                         s.setY(j);
-                        if (flagSortie) {
+                        if (flagSortie) { //si il y a déjà une sortie alors la méthode lance une exception
                             throw new FichierIncorrectException("le fichier contient deux sorties");
-                        } else {
+                        } else { //si il n'y a pas de sortie alors le flagSortie est mit à vrai
                             flagSortie = true;
                         }
                         murs[i][j] = false;
@@ -108,9 +117,9 @@ public class Labyrinthe {
                     case 'P':
                         p.setX(i);
                         p.setY(j);
-                        if (flagPersonnage) {
+                        if (flagPersonnage) {//si il y a déjà un personnage alors la méthode lance une exception
                             throw new FichierIncorrectException("le fichier contient deux personnages");
-                        } else {
+                        } else {//si il n'y a pas de personnage alors le flagPersonnage est mit à vrai
                             flagPersonnage = true;
                         }
                         murs[i][j] = false;
@@ -118,15 +127,15 @@ public class Labyrinthe {
                     case '.':
                         murs[i][j] = false;
                         break;
-                    default:
+                    default: //si le caractère n'est pas un des quatre caractères ci-dessus c'est qu'il est invalide
                         throw new FichierIncorrectException("caractère : " + ligne.charAt(j) + " inconnu");
                 }
             }
         }
-        if (!flagSortie) {
+        if (!flagSortie) { //si flagSortie est à faux, c'est qu'il n'y a pas de sortie
             throw new FichierIncorrectException("le fichier ne contient aucunes sorties");
         }
-        if (!flagPersonnage) {
+        if (!flagPersonnage) { //si flagPersonnage est à faux, c'est qu'il n'y a pas de personnages
             throw new FichierIncorrectException("le fichier ne contient aucuns personnages");
         }
         //fermeture des flux
@@ -138,6 +147,7 @@ public class Labyrinthe {
     /**
      * methode qui permet de deplacer le personnage en modifiant ses coordonees
      * @param action : chaine de caracteres
+     * @throws ActionInconnueException
      */
     public void deplacerPerso(String action) throws ActionInconnueException {
         boolean murRencontre = false;
@@ -159,6 +169,10 @@ public class Labyrinthe {
         }
     }
 
+    /**
+     * méthode qui permet de savoir si le personnage est sur la case sortie
+     * @return booléen qui traduit la situation
+     */
     public boolean etreFini() {
         return  this.personnage.getX() == this.sortie.getX() &&
                 this.personnage.getY() == this.sortie.getY();
@@ -166,6 +180,7 @@ public class Labyrinthe {
 
     @Override
     public String toString(){
+        //l'utilisation d'un stringBuilder est plus efficace pour ce genre d'utilisation qu'un string normal
         StringBuilder returnedString = new StringBuilder();
 
         for (int i = 0; i < this.murs.length; i++) {
