@@ -74,73 +74,64 @@ public class Labyrinthe {
         return new int[] {x, y};
     }
 
+    //todo gérer l'exception avec le nombre de murs incorrect
+    public static Labyrinthe chargerLabyrinthe(String nom) throws FichierIncorrectException, IOException {
+        //ouverture des flux de lecture du fichier contenant le labyrinthe
+        BufferedReader br = new BufferedReader(new FileReader(nom));
+        int x = Integer.parseInt(br.readLine()); //nombre de colonnes
+        int y = Integer.parseInt(br.readLine()); //nombre de lignes
+        //initialisation des variables du labyrinthe rendu
+        boolean[][] murs = new boolean[x][y];
+        Personnage p = new Personnage(0, 0);
+        Sortie s = new Sortie(0, 0);
+        //deux variables booléennes vérifient qu'il n'y ait qu'un et un seul personnage et qu'une et une seule sortie
+        boolean flagSortie = false;
+        boolean flagPersonnage = false;
 
-    public static Labyrinthe chargerLabyrinthe(String nom) throws FichierIncorrectException {
-        //todo test du nombre de sortie, personnage, ...
-        try {
-            //ouverture des flux de lecture du fichier contenant le labyrinthe
-            BufferedReader br = new BufferedReader(new FileReader(nom));
-            int x = Integer.parseInt(br.readLine()); //nombre de colonnes
-            int y = Integer.parseInt(br.readLine()); //nombre de lignes
-            //initialisation des variables du labyrinthe rendu
-            boolean[][] murs = new boolean[x][y];
-            Personnage p = new Personnage(0, 0);
-            Sortie s = new Sortie(0, 0);
-            //deux variables booléennes vérifient qu'il n'y ait qu'un et un seul personnage et qu'une et une seule sortie
-            boolean flagSortie = false;
-            boolean flagPersonnage = false;
-
-            for (int i = 0; i < x; i++) {
-                String ligne = br.readLine();
-                for (int j = 0; j < y; j++) {
-                    switch (ligne.charAt(j)) {
-                        case 'X':
-                            murs[i][j] = true;
-                            break;
-                        case 'S':
-                            s.setX(i);
-                            s.setY(j);
-                            if (flagSortie) {
-                                throw new FichierIncorrectException("le fichier contient deux sorties");
-                            } else {
-                                flagSortie = true;
-                            }
-                            murs[i][j] = false;
-                            break;
-                        case 'P':
-                            p.setX(i);
-                            p.setY(j);
-                            if (flagPersonnage) {
-                                throw new FichierIncorrectException("le fichier contient deux personnages");
-                            } else {
-                                flagPersonnage = true;
-                            }
-                            murs[i][j] = false;
-                            break;
-                        case '.':
-                            murs[i][j] = false;
-                            break;
-                        default:
-                            throw new FichierIncorrectException("caractère : " + ligne.charAt(j) + " inconnu");
-                    }
+        for (int i = 0; i < x; i++) {
+            String ligne = br.readLine();
+            for (int j = 0; j < y; j++) {
+                switch (ligne.charAt(j)) {
+                    case 'X':
+                        murs[i][j] = true;
+                        break;
+                    case 'S':
+                        s.setX(i);
+                        s.setY(j);
+                        if (flagSortie) {
+                            throw new FichierIncorrectException("le fichier contient deux sorties");
+                        } else {
+                            flagSortie = true;
+                        }
+                        murs[i][j] = false;
+                        break;
+                    case 'P':
+                        p.setX(i);
+                        p.setY(j);
+                        if (flagPersonnage) {
+                            throw new FichierIncorrectException("le fichier contient deux personnages");
+                        } else {
+                            flagPersonnage = true;
+                        }
+                        murs[i][j] = false;
+                        break;
+                    case '.':
+                        murs[i][j] = false;
+                        break;
+                    default:
+                        throw new FichierIncorrectException("caractère : " + ligne.charAt(j) + " inconnu");
                 }
             }
-            if (!flagSortie) {
-                throw new FichierIncorrectException("le fichier ne contient aucunes sorties");
-            }
-            if (!flagPersonnage) {
-                throw new FichierIncorrectException("le fichier ne contient aucuns personnages");
-            }
-            //fermeture des flux
-            br.close();
-            return new Labyrinthe(murs, p, s);
-        } catch (NumberFormatException e) {
-            System.out.println("les deux premières lignes doivent contenir des entiers");
-        } catch (IOException e) {
-            System.out.println("Erreur à l'ouverture du fichier");
         }
-        //retourne null si il y a eu une erreur ou une exception lors de la génération du labyrinthe
-        return null;
+        if (!flagSortie) {
+            throw new FichierIncorrectException("le fichier ne contient aucunes sorties");
+        }
+        if (!flagPersonnage) {
+            throw new FichierIncorrectException("le fichier ne contient aucuns personnages");
+        }
+        //fermeture des flux
+        br.close();
+        return new Labyrinthe(murs, p, s);
     }
 
 
@@ -148,29 +139,23 @@ public class Labyrinthe {
      * methode qui permet de deplacer le personnage en modifiant ses coordonees
      * @param action : chaine de caracteres
      */
-    public void deplacerPerso(String action) {
+    public void deplacerPerso(String action) throws ActionInconnueException {
         boolean murRencontre = false;
         //tant que etreFini() est faux ou qu'on ne rencontre pas de mur, on continue
         while (!murRencontre) {
             int[] coorSuivantes = new int[2];
             char caseSuivante;
-            try {
-                // on regarde la case suivante
-                coorSuivantes = getSuivant(this.personnage.getX(), this.personnage.getY(), action);
-                caseSuivante = getChar(coorSuivantes[0],coorSuivantes[1]);
-                // si c'est un mur on s'arrete et on arrête la boucle
-                if (caseSuivante == MUR) {
-                    murRencontre = true;
-                    // si c'est une case vide ou la case sortie alors on peut continuer
-                } else if (caseSuivante == VIDE || caseSuivante == SORTIE) {
-                    this.personnage.setX(coorSuivantes[0]);
-                    this.personnage.setY(coorSuivantes[1]);
-                }
-
-            } catch (ActionInconnueException e) {
-                System.out.println(e); //print : direction <<action>> inconnue
+            // on regarde la case suivante
+            coorSuivantes = getSuivant(this.personnage.getX(), this.personnage.getY(), action);
+            caseSuivante = getChar(coorSuivantes[0],coorSuivantes[1]);
+            // si c'est un mur on s'arrete et on arrête la boucle
+            if (caseSuivante == MUR) {
+                murRencontre = true;
+                // si c'est une case vide ou la case sortie alors on peut continuer
+            } else if (caseSuivante == VIDE || caseSuivante == SORTIE) {
+                this.personnage.setX(coorSuivantes[0]);
+                this.personnage.setY(coorSuivantes[1]);
             }
-
         }
     }
 
