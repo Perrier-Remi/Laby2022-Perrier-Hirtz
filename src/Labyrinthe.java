@@ -75,7 +75,7 @@ public class Labyrinthe {
     }
 
 
-    public static Labyrinthe chargerLabyrinthe(String nom) {
+    public static Labyrinthe chargerLabyrinthe(String nom) throws FichierIncorrectException {
         //todo test du nombre de sortie, personnage, ...
         try {
             //ouverture des flux de lecture du fichier contenant le labyrinthe
@@ -86,6 +86,9 @@ public class Labyrinthe {
             boolean[][] murs = new boolean[x][y];
             Personnage p = new Personnage(0, 0);
             Sortie s = new Sortie(0, 0);
+            //deux variables booléennes vérifient qu'il n'y ait qu'un et un seul personnage et qu'une et une seule sortie
+            boolean flagSortie = false;
+            boolean flagPersonnage = false;
 
             for (int i = 0; i < x; i++) {
                 String ligne = br.readLine();
@@ -97,24 +100,42 @@ public class Labyrinthe {
                         case 'S':
                             s.setX(i);
                             s.setY(j);
+                            if (flagSortie) {
+                                throw new FichierIncorrectException("le fichier contient deux sorties");
+                            } else {
+                                flagSortie = true;
+                            }
                             murs[i][j] = false;
                             break;
                         case 'P':
                             p.setX(i);
                             p.setY(j);
+                            if (flagPersonnage) {
+                                throw new FichierIncorrectException("le fichier contient deux personnages");
+                            } else {
+                                flagPersonnage = true;
+                            }
                             murs[i][j] = false;
                             break;
                         case '.':
                             murs[i][j] = false;
                             break;
                         default:
-                            System.out.println("Erreur"); //TODO à completer
+                            throw new FichierIncorrectException("caractère : " + ligne.charAt(j) + " inconnu");
                     }
                 }
+            }
+            if (!flagSortie) {
+                throw new FichierIncorrectException("le fichier ne contient aucunes sorties");
+            }
+            if (!flagPersonnage) {
+                throw new FichierIncorrectException("le fichier ne contient aucuns personnages");
             }
             //fermeture des flux
             br.close();
             return new Labyrinthe(murs, p, s);
+        } catch (NumberFormatException e) {
+            System.out.println("les deux premières lignes doivent contenir des entiers");
         } catch (IOException e) {
             System.out.println("Erreur à l'ouverture du fichier");
         }
@@ -158,6 +179,7 @@ public class Labyrinthe {
                 this.personnage.getY() == this.sortie.getY();
     }
 
+    @Override
     public String toString(){
         StringBuilder returnedString = new StringBuilder();
 
