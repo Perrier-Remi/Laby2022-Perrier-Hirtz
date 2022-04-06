@@ -15,12 +15,10 @@ public class MainLaby {
             //affichage du labyrinthe
             System.out.println(laby);
 
-            String action = "";
+            System.out.print("quelle action voulez vous effectuer ? ");
+            String action = sc.nextLine();
             //tant que l'action est différente de exit ou que le joueur ne se trouve pas sur la sortie, le jeu continu
-            while (action != "exit" && !laby.etreFini()) {
-                System.out.print("quelle action voulez vous effectuer ? ");
-                action = sc.nextLine();
-
+            while (!action.equals("exit") && !laby.etreFini()) {
                 try {
                     laby.deplacerPerso(action);
                 } catch (ActionInconnueException e) {
@@ -30,6 +28,10 @@ public class MainLaby {
 
                 System.out.println();
                 System.out.println(laby);
+                System.out.println();
+
+                System.out.print("quelle action voulez vous effectuer ? ");
+                action = sc.nextLine();
             }
 
             if (laby.etreFini()) {
@@ -37,6 +39,11 @@ public class MainLaby {
                 System.out.println("   !!!   FELICITATION VOUS AVEZ TERMINE LE LABYRINTHE   !!!   ");
                 System.out.println("   ________________________________________________________   ");
             }
+
+            if (action.equals("exit")) {
+                System.out.println("vous avez quitté le jeu");
+            }
+
         } catch (FichierIncorrectException e) {
             System.out.println(e.getMessage() + ", fermeture du programme");
         } catch (IOException e) {
