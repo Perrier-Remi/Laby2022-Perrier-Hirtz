@@ -1,5 +1,8 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class testLabyrinthe {
@@ -7,7 +10,7 @@ public class testLabyrinthe {
     Labyrinthe laby;
 
     @BeforeEach
-    public void chargerLesDonnee() {
+    public void chargerLesDonnee() throws IOException {
         try {
             laby = laby.chargerLabyrinthe("laby/laby0.txt");
         } catch (FichierIncorrectException e) {
@@ -49,7 +52,7 @@ public class testLabyrinthe {
     }
 
     @Test
-    public void testMethodeDeplacerPerso() {
+    public void testMethodeDeplacerPerso() throws ActionInconnueException {
         //deplacement vers le haut
         laby.deplacerPerso("haut");
         assertEquals(laby.getChar(1,3), 'P', "le personnage doit etre en x 1 et y 3");
@@ -68,7 +71,7 @@ public class testLabyrinthe {
     }
 
     @Test
-    public void testMethodeEtreFini() {
+    public void testMethodeEtreFini() throws ActionInconnueException {
         assertEquals(laby.etreFini(), false, "le personnage n'est pas sur la case sortie");
         laby.deplacerPerso("haut");
         laby.deplacerPerso("gauche");
