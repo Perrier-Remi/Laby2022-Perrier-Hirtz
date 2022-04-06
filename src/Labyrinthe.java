@@ -34,9 +34,12 @@ public class Labyrinthe {
      * @return retour : character correspondant a l initial du contenu de la case
      */
     public char getChar(int x, int y) {
+        //si il y a un mur en x, y alors retour vaut MUR sinon il vaut VIDE
         char retour = murs[x][y] ? MUR : VIDE;
+        //si il y a un personnage en x,y alors retour est changé et vaut PJ
         if (personnage.getX() == x && personnage.getY() == y) {
             retour = PJ;
+            //si il y une sortie en x,y alors retour est changé et vaut SORTIE
         } else if (sortie.getX() == x && sortie.getY() == y) {
             retour = SORTIE;
         }
@@ -49,31 +52,31 @@ public class Labyrinthe {
      * @param x         : numero de la ligne actuelle
      * @param y         : numero de la colonne actuelle
      * @param direction : direction
-     * @return suiv : case suivante
+     * @return case suivante
      */
     public static int[] getSuivant(int x, int y, String direction) throws ActionInconnueException{
-        int[] suiv = {x, y};
         switch (direction) {
             case "haut":
-                suiv[0] = x - 1;
+                x--;
                 break;
             case "bas":
-                suiv[0] = x + 1;
+                x++;
                 break;
             case "gauche":
-                suiv[1] = y - 1;
+                y--;
                 break;
             case "droite":
-                suiv[1] = y + 1;
+                y++;
                 break;
             default:
-                throw new ActionInconnueException("direction : "+direction+" inconnu");
+                throw new ActionInconnueException("direction : "+direction+" inconnue");
         }
-        return suiv;
+        return new int[] {x, y};
     }
 
 
     public static Labyrinthe chargerLabyrinthe(String nom) {
+        //todo test du nombre de sortie, personnage, ...
         try {
             //ouverture des flux de lecture du fichier contenant le labyrinthe
             BufferedReader br = new BufferedReader(new FileReader(nom));
@@ -125,7 +128,6 @@ public class Labyrinthe {
      * @param action : chaine de caracteres
      */
     public void deplacerPerso(String action) {
-        //TODO à modifier lorque l'on rencontre la sortie
         boolean murRencontre = false;
         //tant que etreFini() est faux ou qu'on ne rencontre pas de mur, on continue
         while (!murRencontre) {
@@ -135,17 +137,17 @@ public class Labyrinthe {
                 // on regarde la case suivante
                 coorSuivantes = getSuivant(this.personnage.getX(), this.personnage.getY(), action);
                 caseSuivante = getChar(coorSuivantes[0],coorSuivantes[1]);
+                // si c'est un mur on s'arrete et on arrête la boucle
                 if (caseSuivante == MUR) {
-                    // si c'est un mur on s'arrete et on arrête la boucle
                     murRencontre = true;
-                } else if (caseSuivante == VIDE) {
-                    // si c'est une case vide alors on peut continuer
+                    // si c'est une case vide ou la case sortie alors on peut continuer
+                } else if (caseSuivante == VIDE || caseSuivante == SORTIE) {
                     this.personnage.setX(coorSuivantes[0]);
                     this.personnage.setY(coorSuivantes[1]);
                 }
 
             } catch (ActionInconnueException e) {
-                System.out.println(e);
+                System.out.println(e); //print : direction <<action>> inconnue
             }
 
         }

@@ -65,7 +65,7 @@ public class testLabyrinthe {
 
     @Test
     public void testMethodeEtreFini() {
-        assertEquals(laby.etreFini(), false, "la partie n'est pas encore finie");
+        assertEquals(laby.etreFini(), false, "le personnage n'est pas sur la case sortie");
         laby.deplacerPerso("haut");
         laby.deplacerPerso("gauche");
         assertEquals(laby.etreFini(), true, "le personnage et la sortie sont sur la même case donc etreFini() doit renvoyer vrai");
