@@ -94,41 +94,48 @@ public class Labyrinthe {
         for (int i = 0; i < x; i++) {
             String ligne = br.readLine();
 
-            //test si le nombre de lignes est bon (si la ligne est vide il y a un problème)
-            if (ligne == null) {throw new FichierIncorrectException("le nombre de ligne n'est pas le même que celui déclaré au début du fichier");}
-            //test si le nombre de caractères de la ligne est bon (si il est différent de x alors il y a un problème)
-            if (ligne.length() != x) {throw new FichierIncorrectException("le nombre de colonnes n'est pas le même que celui déclaré au début du fichier");}
+//            //test si le nombre de lignes est bon (si la ligne est vide il y a un problème)
+//            if (ligne == null) {throw new FichierIncorrectException("le nombre de ligne n'est pas le même que celui déclaré au début du fichier");}
+//            //test si le nombre de caractères de la ligne est bon (si il est différent de x alors il y a un problème)
+//            if (ligne.length() != x) {throw new FichierIncorrectException("le nombre de colonnes n'est pas le même que celui déclaré au début du fichier");}
 
             for (int j = 0; j < y; j++) {
-                switch (ligne.charAt(j)) {
-                    case 'X':
-                        murs[i][j] = true;
-                        break;
-                    case 'S':
-                        s.setX(i);
-                        s.setY(j);
-                        if (flagSortie) { //si il y a déjà une sortie alors la méthode lance une exception
-                            throw new FichierIncorrectException("le fichier contient deux sorties");
-                        } else { //si il n'y a pas de sortie alors le flagSortie est mit à vrai
-                            flagSortie = true;
-                        }
-                        murs[i][j] = false;
-                        break;
-                    case 'P':
-                        p.setX(i);
-                        p.setY(j);
-                        if (flagPersonnage) {//si il y a déjà un personnage alors la méthode lance une exception
-                            throw new FichierIncorrectException("le fichier contient deux personnages");
-                        } else {//si il n'y a pas de personnage alors le flagPersonnage est mit à vrai
-                            flagPersonnage = true;
-                        }
-                        murs[i][j] = false;
-                        break;
-                    case '.':
-                        murs[i][j] = false;
-                        break;
-                    default: //si le caractère n'est pas un des quatre caractères ci-dessus c'est qu'il est invalide
-                        throw new FichierIncorrectException("caractère : " + ligne.charAt(j) + " inconnu");
+                try {
+                    char c = ligne.charAt(j);
+                    switch (c) {
+                        case 'X':
+                            murs[i][j] = true;
+                            break;
+                        case 'S':
+                            s.setX(i);
+                            s.setY(j);
+                            if (flagSortie) { //si il y a déjà une sortie alors la méthode lance une exception
+                                throw new FichierIncorrectException("le fichier contient deux sorties");
+                            } else { //si il n'y a pas de sortie alors le flagSortie est mit à vrai
+                                flagSortie = true;
+                            }
+                            murs[i][j] = false;
+                            break;
+                        case 'P':
+                            p.setX(i);
+                            p.setY(j);
+                            if (flagPersonnage) {//si il y a déjà un personnage alors la méthode lance une exception
+                                throw new FichierIncorrectException("le fichier contient deux personnages");
+                            } else {//si il n'y a pas de personnage alors le flagPersonnage est mit à vrai
+                                flagPersonnage = true;
+                            }
+                            murs[i][j] = false;
+                            break;
+                        case '.':
+                            murs[i][j] = false;
+                            break;
+                        default: //si le caractère n'est pas un des quatre caractères ci-dessus c'est qu'il est invalide
+                            throw new FichierIncorrectException("caractère : " + c + " inconnu");
+                    }
+                } catch (StringIndexOutOfBoundsException e) { //est lancé lorsque la methode charAt() veut lire un caractère hors de portée
+                    throw new FichierIncorrectException("le nombre de colonnes n'est pas le même que celui déclaré au début du fichier");
+                } catch (NullPointerException e) { //est lancé lorsque charAt() essaie de lire un string, mais qui est vide
+                    throw new FichierIncorrectException("le nombre de ligne n'est pas le même que celui déclaré au début du fichier");
                 }
             }
         }
