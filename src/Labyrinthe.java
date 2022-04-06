@@ -36,10 +36,10 @@ public class Labyrinthe {
     public char getChar(int x, int y) {
         //s'il y a un mur en x, y alors retour vaut MUR sinon il vaut VIDE
         char retour = murs[x][y] ? MUR : VIDE;
-        //s'il y a un personnage en x,y alors retour est changé et vaut PJ
+        //s'il y a un personnage en x, y alors retour est changé et vaut PJ
         if (personnage.getX() == x && personnage.getY() == y) {
             retour = PJ;
-            //s'il y une sortie en x,y alors retour est changé et vaut SORTIE
+            //s'il y une sortie en x, y alors retour est changé et vaut SORTIE si ce n'est pas déjà un personnage
         } else if (sortie.getX() == x && sortie.getY() == y) {
             retour = SORTIE;
         }
@@ -74,7 +74,6 @@ public class Labyrinthe {
         return new int[] {x, y};
     }
 
-    //todo gérer l'exception avec le nombre de murs incorrect
     public static Labyrinthe chargerLabyrinthe(String nom) throws FichierIncorrectException, IOException {
 
         //ouverture des flux de lecture du fichier contenant le labyrinthe
@@ -93,12 +92,6 @@ public class Labyrinthe {
 
         for (int i = 0; i < x; i++) {
             String ligne = br.readLine();
-
-//            //test si le nombre de lignes est bon (si la ligne est vide il y a un problème)
-//            if (ligne == null) {throw new FichierIncorrectException("le nombre de ligne n'est pas le même que celui déclaré au début du fichier");}
-//            //test si le nombre de caractères de la ligne est bon (si il est différent de x alors il y a un problème)
-//            if (ligne.length() != x) {throw new FichierIncorrectException("le nombre de colonnes n'est pas le même que celui déclaré au début du fichier");}
-
             for (int j = 0; j < y; j++) {
                 try {
                     char c = ligne.charAt(j);
@@ -158,14 +151,14 @@ public class Labyrinthe {
      */
     public void deplacerPerso(String action) throws ActionInconnueException {
         boolean murRencontre = false;
-        //tant que etreFini() est faux ou qu'on ne rencontre pas de mur, on continue
+        //tant qu'on ne rencontre pas de mur, on continue
         while (!murRencontre) {
             int[] coorSuivantes = new int[2];
             char caseSuivante;
             // on regarde la case suivante
             coorSuivantes = getSuivant(this.personnage.getX(), this.personnage.getY(), action);
             caseSuivante = getChar(coorSuivantes[0],coorSuivantes[1]);
-            // si c'est un mur on s'arrete et on arrête la boucle
+            // si c'est un mur on s'arrête et on arrête la boucle
             if (caseSuivante == MUR) {
                 murRencontre = true;
                 // si c'est une case vide ou la case sortie alors on peut continuer

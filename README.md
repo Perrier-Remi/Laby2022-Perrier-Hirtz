@@ -22,4 +22,7 @@ l'emplacement du labyrinthe. À partir de ce moment-là vous n'avez que 5 action
 
 Test : tous nos tests répondent correctement à nos attentes. Il n'y a rien à signaler sur ce point.
 
-Couverture des tests : 
+Couverture des tests : chaque méthode est testée avec des valeurs type vérifiant ainsi leur bon fonctionnement.
+Les méthodes devant retourner des exceptions, lèvent bien des exceptions lorsque les valeurs entrées sont fausses,
+c'est notamment le cas de chargerLabyrinthe qui peut renvoyer beaucoup d'exceptions, car il existe de nombreuses manières pour que le fichier contenant le labyrinthe ne soit pas correct. L'autre méthode qui peut lever des exceptions est getSuivant lorsque la valeur entrée n'est pas celle attendue.
+Ces deux méthodes sont largement testées pour être sûr de leurs efficacités.

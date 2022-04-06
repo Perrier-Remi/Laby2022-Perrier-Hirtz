@@ -7,28 +7,28 @@ public class MainLaby {
 
         System.out.print("Entrez le chemin du fichier vers le labyrinthe : ");
         String nomFichier = sc.nextLine();
+        System.out.println();
 
         try {
-            Labyrinthe laby = null;
+            Labyrinthe laby = Labyrinthe.chargerLabyrinthe(nomFichier);
 
-            laby = Labyrinthe.chargerLabyrinthe(nomFichier);
             //affichage du labyrinthe
             System.out.println(laby);
 
-
             String action = "";
-            //tant que l'action est différente de exit ou que le joueur ne se trouve pas sur la sortie, le jeu continue
+            //tant que l'action est différente de exit ou que le joueur ne se trouve pas sur la sortie, le jeu continu
             while (action != "exit" && !laby.etreFini()) {
-                System.out.print("\nquelle action voulez vous effectuer ? ");
+                System.out.print("quelle action voulez vous effectuer ? ");
                 action = sc.nextLine();
 
                 try {
                     laby.deplacerPerso(action);
                 } catch (ActionInconnueException e) {
                     System.out.println(e.getMessage());
-                    System.out.println("l'action n'a pas été prise en compte\n");
+                    System.out.println("l'action n'a pas été prise en compte");
                 }
 
+                System.out.println();
                 System.out.println(laby);
             }
 
