@@ -8,7 +8,11 @@ public class testLabyrinthe {
 
     @BeforeEach
     public void chargerLesDonnee() {
-        laby = laby.chargerLabyrinthe("laby/laby0.txt");
+        try {
+            laby = laby.chargerLabyrinthe("laby/laby0.txt");
+        } catch (FichierIncorrectException e) {
+            System.out.println(e);
+        }
     }
 
     @Test
@@ -69,5 +73,21 @@ public class testLabyrinthe {
         laby.deplacerPerso("haut");
         laby.deplacerPerso("gauche");
         assertEquals(laby.etreFini(), true, "le personnage et la sortie sont sur la même case donc etreFini() doit renvoyer vrai");
+    }
+
+    @Test
+    public void testExceptionChargerLabyrintheDeuxSorties() {
+        FichierIncorrectException exception = assertThrows(
+                FichierIncorrectException.class,
+                () -> {laby.chargerLabyrinthe("laby/laby_deuxSortie.txt");}
+        );
+    }
+
+    @Test
+    public void testExceptionChargerLabyrinthePasSorties() {
+        FichierIncorrectException exception = assertThrows(
+                FichierIncorrectException.class,
+                () -> {laby.chargerLabyrinthe("laby/laby_pasSortie.txt");}
+        );
     }
 }
