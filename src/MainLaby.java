@@ -15,23 +15,24 @@ public class MainLaby {
             //affichage du labyrinthe
             System.out.println(laby);
 
-            System.out.print("quelle action voulez vous effectuer ? ");
-            String action = sc.nextLine();
+            String action = "";
             //tant que l'action est différente de exit ou que le joueur ne se trouve pas sur la sortie, le jeu continu
             while (!action.equals("exit") && !laby.etreFini()) {
-                try {
-                    laby.deplacerPerso(action);
-                } catch (ActionInconnueException e) {
-                    System.out.println(e.getMessage());
-                    System.out.println("l'action n'a pas été prise en compte");
-                }
-
-                System.out.println();
-                System.out.println(laby);
-                System.out.println();
-
                 System.out.print("quelle action voulez vous effectuer ? ");
                 action = sc.nextLine();
+
+                if (!action.equals("exit")) {
+                    try {
+                        laby.deplacerPerso(action);
+                    } catch (ActionInconnueException e) {
+                        System.out.println(e.getMessage());
+                        System.out.println("l'action n'a pas été prise en compte");
+                    }
+                    System.out.println();
+                    System.out.println(laby);
+                    System.out.println();
+
+                }
             }
 
             if (laby.etreFini()) {
